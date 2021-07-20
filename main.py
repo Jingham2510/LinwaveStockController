@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import ttk
 from barcodeGenerator import GUIBarcodeGenerator
+from barcodeReader import barcodeReader
+
 CURR_VER = "0.01"
 
 
@@ -58,6 +60,7 @@ def MainFrameSetup():
 
 
     BarcodeGeneratorFrameSetup(generatorFrame)
+    BarcodeScannerFrameSetup(scannerFrame)
 
     #Raises the 
     RaiseFrame(mainFrame)
@@ -123,10 +126,34 @@ def EntryValidate(inStr, acttyp):
 
 
 
-def BarcodeReaderSetup(scannerFrame):
+def BarcodeScannerFrameSetup(scannerFrame):
     #Generates and places the frame title
     frameTitle = ttk.Label(scannerFrame, text="Barcode Scanner")
+    frameTitle.grid(column=2, row=1, sticky=(W,E))
 
+    #Generates and places the instructions
+    scannerInstructs = ttk.Label(scannerFrame, text="Press Q to quit the scanner")
+    scannerInstructs.grid(column=1, row=2, sticky=(W,E))
+
+
+    #Generates and places the scan button
+    scannerButton = ttk.Button(scannerFrame, text = "Scan Barcode", command = lambda: BarcodeScannerWrapper(scannerFrame))
+    scannerButton.grid(column=2, row=2, sticky=(W,E))
+
+
+
+
+def BarcodeScannerWrapper(scannerFrame):
+
+    #Generates and places the scanning label to the right of the button
+    scannerCurr = ttk.Label(scannerFrame, text="Scanning...")
+    scannerCurr.grid(column=3, row=2, sticky=(W,E))
+
+    data = barcodeReader()
+
+    scannerPrev = ttk.Label(scannerFrame, text="Previous Barcode: " + data)
+    scannerPrev.grid(column=3, row=2, sticky =(W,E))
+    
 
 
 def RaiseFrame(frame):
