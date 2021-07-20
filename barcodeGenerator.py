@@ -1,4 +1,5 @@
 import barcode
+import shutil
 
 #Checks that the barcode is the correct length
 #Returns 1 if okay, 0 if not
@@ -38,6 +39,7 @@ def BarcodeGeneration():
         #Saves the barcode in the current DIR
         barcodeFile = generatedBarcode.save(barcodeID)
         barcodeFile
+        BarcodeLocationMove(barcodeID)
         numOfBarcodes -= 1
     print("Barcodes generated")
 
@@ -57,6 +59,7 @@ def GUIBarcodeGenerator(barcodeID):
 
         barcodeFile = generatedBarcode.save(barcodeID)
         barcodeFile
+        BarcodeLocationMove(barcodeID)
         print("DEBUG: BARCODE GENERATED")
         return 1
 
@@ -64,7 +67,14 @@ def GUIBarcodeGenerator(barcodeID):
 
 
 
+#Moves the barcode from the DIR where the code is to a seperate one
+#Change DIR path with version updates - CURR V0.1
+def BarcodeLocationMove(barcodeID):
+    source = r"P:\Joe\MicroController Product Controller\Code - V0.1\src\\" + barcodeID + ".svg"
+    print(source)
+    destination = r"P:\Joe\MicroController Product Controller\Code - V0.1\src\barcodes"
+    shutil.move(source, destination)
     
 
 
-
+BarcodeGeneration()
