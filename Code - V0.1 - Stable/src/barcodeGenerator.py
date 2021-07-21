@@ -71,7 +71,7 @@ def GUIBarcodeGenerator(barcodeID):
 #Moves the barcode from the DIR where the code is to a seperate one
 #Change DIR path with version updates - CURR V0.1
 def BarcodeLocationMove(barcodeID):
-    source = r"P:\Joe\MicroController Product Controller\Code - V0.1\src\\" + barcodeID + ".svg"
+    source = r"P:\Joe\MicroController Product Controller\Code - V0.1 - Stable\src\\" + barcodeID + ".svg"
     #print(source)
     destination = r"P:\Joe\MicroController Product Controller\barcodes"
     #Moves the barcode to a seperate folder
