@@ -7,15 +7,17 @@ import barcode
 from barcodeGenerator import GUIBarcodeGenerator, standardCheck
 from barcodeReader import barcodeReader
 import os
-from dataHandler import openTabloo, BarcodeCheck
+from dataHandler import getBarcodeInfo, openTabloo, BarcodeCheck
 
+
+global root
 
 CURR_VER = "0.02"
 
 
 # Sets up the main GUI - The main window has all the frames layered on eachother- we raise the one we want each time
 def MainFrameSetup():
-
+    global root
     # creates the main window
     root = Tk()
     root.title("Linwave Stock Tracker")
@@ -195,22 +197,23 @@ def BarcodeScannerWrapper(scannerFrame):
 
 
     # Uses the other file to scan the barcode and store the data
-    data = barcodeReader()
+    barcodeID = barcodeReader()
 
     
 
     #If the scanned barcode is invalid pop up a message box
-    if (standardCheck(data) == 0):
+    if (standardCheck(barcodeID) == 0):
         print("DEBUG: SCANNED INVALID BARCODE")
         messagebox.showinfo(title = "Warning", message="Barcode is invalid")
 
     #Checks to see if the barcode exists
-    elif(BarcodeCheck(data) == 0):
+    elif(BarcodeCheck(barcodeID) == 0):
         print("DEBUG: BARCODE DOESN'T EXIST")
         messagebox.showinfo(title ="Warning", message="Barcode does not exist in the database")
 
     else:
-        scannerPrev = ttk.Label(scannerFrame, text="Previous Barcode: " + data)
+        changeBarcodeDetailsFrame(barcodeID)
+        scannerPrev = ttk.Label(scannerFrame, text="Previous Barcode: " + barcodeID)
         scannerPrev.grid(column=3, row=2, sticky=(W, E))
 
 
@@ -250,9 +253,51 @@ def OpenCSV():
 
     os.startfile(fileName)
 
+
 # For raising frames to the top
 def RaiseFrame(frame):
     frame.tkraise()
+
+
+
+
+
+
+#Produces a new frame which you can use to edit the details of a barcode
+def changeBarcodeDetailsFrame(barcodeID):    
+    
+    print("Under construction")
+
+    currBarcode = getBarcodeInfo(barcodeID)
+    
+    detailsWindow = Toplevel(root)
+
+    windowFrame = ttk.Frame(detailsWindow, padding = "3 3 12 12")
+    windowFrame.grid(row=0, column=0, stick=(N,W,E,S))
+
+    windowLabel = ttk.Label(detailsWindow, text="Barcode Editor")
+    windowLabel.grid(row=1,column=2, sticky=(W,E))
+
+    
+
+    barcodeData = vars(currBarcode)
+
+    colCount = 1
+    #Prints the titles for the data onto the window
+    for key in barcodeData.keys():
+        dataTitle = ttk.Label(detailsWindow, text=key)
+        dataTitle.grid(row =2, column = colCount , sticky = (W,E))
+        colCount += 1
+   
+
+    colCount = 1
+    #Prints all the data for the barcode onto the window
+    for key in barcodeData:       
+
+        #Prints the actual data
+        dataLabel = ttk.Label(detailsWindow, text=barcodeData[key])
+        dataLabel.grid(row =3, column = colCount , sticky = (W,E))
+        colCount += 1
 
 
 MainFrameSetup()

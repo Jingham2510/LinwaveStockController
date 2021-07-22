@@ -4,7 +4,7 @@ import barcodeClass as bc
 import openpyxl
 from openpyxl.styles import numbers
 import tabloo
-
+from datetime import date
 
 
 
@@ -24,8 +24,11 @@ def appendNewBarcode(barcode):
         #Stores the final row number so we can append the data to the one below that
         finalRow = df.index[-1:] + 1
         
+        #Gives the barcode a date
+        currDate = date.today()
+        dateFormatted = currDate.strftime("%d/%m/%Y")
 
-        barcode = pd.Series(data=[str(barcode.ID), barcode.type, barcode.name, None, None], index=df.columns)
+        barcode = pd.Series(data=[str(barcode.ID), barcode.type, barcode.name, dateFormatted, None], index=df.columns)
         df = df.append(barcode, ignore_index=True)
         #print(df)
         df.to_csv('P:\Joe\MicroController Product Controller\Barcode Database.csv')    
@@ -72,9 +75,33 @@ def formatSheet():
             cell.number_format = '0'
 
     #Changes the column length so you can read the full barcode
-    ws.column_dimensions["B"].width = 13
+    ws.column_dimensions["B"].width = 14
+    ws.column_dimensions["E"].width = 12
     wb.save("P:\Joe\MicroController Product Controller\Barcode Database.xlsx")
     wb.close()
+
+
+
+def getBarcodeInfo(barcodeID):
+
+    df = pd.read_csv('P:\Joe\MicroController Product Controller\Barcode Database.csv', index_col=0)
+    #count how many rows have gone through so we can get the data from the correct row
+    keycount = 0
+
+    for barcode in df["Barcode"]:
+        #Ignore if nothing in cell
+        if (pd.notna(barcode)):
+           
+            if (int(barcode) == int(barcodeID)):
+                break
+            keycount += 1
+    
+
+    barcodeRow = df.iloc[keycount]
+
+    barcode = bc.barcodeObj(barcodeRow["Barcode"], barcodeRow["Type"], barcodeRow["Name"], barcodeRow["Location"])
+    #print(barcode)
+    return barcode
 
 
 
@@ -91,3 +118,4 @@ def openTabloo():
 #print(df)
 
 formatSheet()
+

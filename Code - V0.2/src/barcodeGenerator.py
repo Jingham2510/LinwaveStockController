@@ -62,11 +62,8 @@ def GUIBarcodeGenerator(barcodeID, barcodeType, barcodeName):
     elif (barcodeType == "" or barcodeName == ""):
         print("DEBUG: EMPTY FIELDS")
         return -3
-    #Wont generate a barcode if the barcode doesnt end with a 6, its our way of knowing that its one of our barcodes
-    elif (int(barcodeID) % 10 != 6):
-        print("DEBUG: INCORRECT VALIDATION DIGIT")
-        return -4
-        
+    
+
     else:
         #print(dataHandler.barcodeCheck(barcodeID))
          #Creates the barcode SVG and also the barcode object
@@ -77,7 +74,7 @@ def GUIBarcodeGenerator(barcodeID, barcodeType, barcodeName):
         BarcodeLocationMove(barcodeID)
 
         #Created here because we know its a valid barcode here
-        generatedBarcode = bc.barcodeObj(barcodeID, barcodeType, barcodeName)
+        generatedBarcode = bc.barcodeObj(barcodeID, barcodeType, barcodeName, None)
         #print(generatedBarcode.__dict__)
         dataHandler.appendNewBarcode(generatedBarcode)
 
