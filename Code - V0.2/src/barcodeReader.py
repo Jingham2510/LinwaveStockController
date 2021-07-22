@@ -2,13 +2,8 @@ import cv2
 from pyzbar.pyzbar import decode
 from barcodeDetector import *
 
-# Double check that the barcode detector is imported correctly
-if (importCheck()):
-    print("Detector functions imported")
 
-else:
-    print("Detector functions not detected... exiting program")
-    exit()
+
 
 """
 #Opens the test image

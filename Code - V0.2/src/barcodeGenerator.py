@@ -2,13 +2,14 @@ import barcode
 import shutil
 import barcodeClass as bc
 import dataHandler
+import os.path
 
 
 # Checks that the barcode is the correct length
 # Returns 1 if okay, 0 if not
 def standardCheck(barcodeID):
-    if (len(barcodeID) != 12):
-        print("This standard requires 12 digits!")
+    if (len(barcodeID) != 13):
+        print("This standard requires 13 digits!")
         return 0
     else:
         return 1
@@ -33,7 +34,7 @@ def BarcodeGeneration():
             continue
 
         # Change the 'ean13' bit based on what standard we want to use
-        generatedBarcode = barcode.get('ean13', barcodeID)
+        generatedBarcode = barcode.get('ean13', barcodeID, add_checksum=False)
 
         # Saves the barcode in the current DIR
         barcodeFile = generatedBarcode.save(barcodeID)
@@ -45,17 +46,29 @@ def BarcodeGeneration():
 
 #Generates the barcode
 def GUIBarcodeGenerator(barcodeID, barcodeType, barcodeName):
+    
+    
+    
     # Checks the ID to make sure its valid
     if (standardCheck(barcodeID) == 0):
         print("DEBUG: ID NOT VALID")
         return -1
     #Wont generate a barcode if it already exists in the database
-    elif (dataHandler.barcodeCheck(barcodeID) == 1):
+    elif (dataHandler.BarcodeCheck(barcodeID) == 1):
         print("DEBUG: BARCODE ALREADY EXISTS")
         return -2
+
+    #Wont generate a barcode if the data fields dont have anything in them
+    elif (barcodeType == "" or barcodeName == ""):
+        print("DEBUG: EMPTY FIELDS")
+        return -3
+    #Wont generate a barcode if the barcode doesnt end with a 6, its our way of knowing that its one of our barcodes
+    elif (int(barcodeID) % 10 != 6):
+        print("DEBUG: INCORRECT VALIDATION DIGIT")
+        return -4
         
     else:
-        print(dataHandler.barcodeCheck(barcodeID))
+        #print(dataHandler.barcodeCheck(barcodeID))
          #Creates the barcode SVG and also the barcode object
         barcodeSVG = barcode.get('ean13', barcodeID)
 
@@ -77,6 +90,17 @@ def GUIBarcodeGenerator(barcodeID, barcodeType, barcodeName):
 def BarcodeLocationMove(barcodeID):
     source = r"P:\Joe\MicroController Product Controller\Code - V0.2\\" + barcodeID + ".svg"
     # print(source)
+
+    
+
+
     destination = r"P:\Joe\MicroController Product Controller\barcodes"
+
+    #If the file already exists return 0
+    #A last line of defence, it shouldn't happen
+    if (os.path.exists(r"P:\Joe\MicroController Product Controller\barcodes\\" + barcodeID + ".svg")):
+        return -1
+
+
     # Moves the barcode to a seperate folder
     shutil.move(source, destination)

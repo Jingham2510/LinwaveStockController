@@ -1,10 +1,14 @@
+from re import L
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 
 import barcode
-from barcodeGenerator import GUIBarcodeGenerator
+from barcodeGenerator import GUIBarcodeGenerator, standardCheck
 from barcodeReader import barcodeReader
 import os
+from dataHandler import openTabloo, BarcodeCheck
+
 
 CURR_VER = "0.02"
 
@@ -120,6 +124,18 @@ def BarcodeGeneratorFrameSetup(generatorFrame):
     generateBarcodeButton.grid(column=3, row=2, sticky=(W, E))
 
 
+    generateClearButton = ttk.Button(generatorFrame, text="Clear", command =lambda: fieldClear(barcodeIDField, barcodeTypeField, barcodeNameField))
+    generateClearButton.grid(column=4, row=2, sticky=(W,E))
+
+
+
+#Clears all fields on the frame
+def fieldClear(IDField, typeField, nameField):
+    IDField.delete(0, END)
+    typeField.delete(0, END)
+    nameField.delete(0, END)
+
+
 # Handles the barcode generation
 def BarcodeGeneratorWrapper(barcodeID, barcodeType, barcodeName, generatorFrame):
     genFlag = GUIBarcodeGenerator(barcodeID, barcodeType, barcodeName)
@@ -138,6 +154,13 @@ def BarcodeGeneratorWrapper(barcodeID, barcodeType, barcodeName, generatorFrame)
         failureLabel=ttk.Label(generatorFrame, text="Barcode already exists")
         failureLabel.grid(column=5, row=2, sticky=(W,E))
 
+    if(genFlag == -3):
+        failureLabel = ttk.Label(generatorFrame, text="Please fill every field")
+        failureLabel.grid(column=5, row=2, sticky=(W,E))
+
+    if(genFlag == -4):
+        failureLabel = ttk.Label(generatorFrame, text="Barcode doesn't end in a 6")
+        failureLabel.grid(column=5, row=2, sticky=(W,E))
 
 
 # Validates entries into the barcode text field
@@ -145,7 +168,7 @@ def EntryValidate(inStr, acttyp):
     # Checks the action type
     if acttyp == '1':  # insert
         # If the character isnt a digit or is too long don't insert it
-        if not inStr.isdigit() or len(inStr) > 12:
+        if not inStr.isdigit() or len(inStr) > 13:
             return False
     return True
 
@@ -167,18 +190,28 @@ def BarcodeScannerFrameSetup(scannerFrame):
     scannerButton.grid(column=2, row=2, sticky=(W, E))
 
 
-# Handles the barcode scanning
+# Handles the barcode scanning - and the processes afterwards
 def BarcodeScannerWrapper(scannerFrame):
 
-    # Generates and places the scanning label to the right of the button
-    scannerCurr = ttk.Label(scannerFrame, text="Scanning...")
-    scannerCurr.grid(column=3, row=2, sticky=(W, E))
 
     # Uses the other file to scan the barcode and store the data
     data = barcodeReader()
 
-    scannerPrev = ttk.Label(scannerFrame, text="Previous Barcode: " + data)
-    scannerPrev.grid(column=3, row=2, sticky=(W, E))
+    
+
+    #If the scanned barcode is invalid pop up a message box
+    if (standardCheck(data) == 0):
+        print("DEBUG: SCANNED INVALID BARCODE")
+        messagebox.showinfo(title = "Warning", message="Barcode is invalid")
+
+    #Checks to see if the barcode exists
+    elif(BarcodeCheck(data) == 0):
+        print("DEBUG: BARCODE DOESN'T EXIST")
+        messagebox.showinfo(title ="Warning", message="Barcode does not exist in the database")
+
+    else:
+        scannerPrev = ttk.Label(scannerFrame, text="Previous Barcode: " + data)
+        scannerPrev.grid(column=3, row=2, sticky=(W, E))
 
 
 # Sets up the config frame
@@ -188,10 +221,18 @@ def ConfigFrameSetup(configFrame):
     frameTitle = ttk.Label(configFrame, text="Config")
     frameTitle.grid(column=2, row=1, sticky=(W, E))
 
-    # Generates the button which opens the barcode spreadsheet
+    # Generates the buttons which open the barcode spreadsheet/Barcode CSV/ Tabloo Page
     openSpreadsheet = ttk.Button(
         configFrame, text="Open Barcode Spreadsheet", command=OpenSpreadsheet)
     openSpreadsheet.grid(column=2, row=2, sticky=(W, E))
+
+    openCSV = ttk.Button(configFrame, text="Open csv File", command=OpenCSV)
+    openCSV.grid(column=3, row=2, sticky=(W,E))
+
+
+    openTablooButton = ttk.Button(configFrame, text="Open Tabloo DONT CLICK LOL", command=openTabloo)
+    openTablooButton.grid(column=4, row=2, sticky=(W,E))
+
 
 
 # Opens the spreadsheet - may be remoced at a later date
@@ -202,6 +243,12 @@ def OpenSpreadsheet():
 
     os.startfile(fileName)
 
+
+def OpenCSV():
+    # If filepath changes please replace this with the new one
+    fileName = r"P:\Joe\MicroController Product Controller\Barcode Database.csv"
+
+    os.startfile(fileName)
 
 # For raising frames to the top
 def RaiseFrame(frame):
