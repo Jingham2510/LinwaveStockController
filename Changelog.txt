@@ -1,0 +1,24 @@
+
+V0.1 - Joe:
+-Developed the Barcode Generator (Standalone version & version for GUI)
+-Developed the Barcode Detector (Used by the Barcode Scanner)
+	-Including moving the files once generated - to get rid of the clutter
+	-Moves to a file in my public folder - will be updated on rollout of code
+-Developed the Barcode Scanner
+-Developed the first GUI rendition 
+	-inluding buttons that do the barcode bits!!
+	-Config menu
+		- Open spreadsheet from program
+-Developed the first data handler
+	-Adds new barcodes to an excel spreadsheet
+
+
+V0.2
+-Deletion of first data handler
+	-There are probably simpler and more suitable options
+	-This can be achieved with OOP 
+-Implementation of new data handler (done using pandaS)
+-GUI updates, more fields for entry for barcode generation
+-Barcode scanner now checks if barcodes exist/ are valid
+	
+
