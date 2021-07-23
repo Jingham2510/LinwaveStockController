@@ -3,16 +3,17 @@
 # When this needs to be output to a database/pandas/excel, it can be quickly turned into a list (like a row of a database)
 class barcodeObj:
     # Creates a new barcodeObj
-    def __init__(self, ID, type, name, locationID):
+    #Important these stay at capitals for formatting in the csv and xlsx
+    def __init__(self, ID, Type, Name, LocationID):
         self.ID = ID
-        self.type = type
-        self.name = name
-        self.locationID = None
+        self.Type = Type
+        self.Name = Name
+        self.LocationID = LocationID
 
     # Sets the new location for the barcode
 
-    def setLocation(self, locationID):
-        self.locationID = locationID
+    def setLocation(self, LocationID):
+        self.LocationID = LocationID
 
     def __str__(self):
-        return "ID: {self.ID}, Type: {self.type}, Name: {self.name}, Location: {self.locationID}".format(self=self)
+        return "ID: {self.ID}, Type: {self.Type}, Name: {self.Name}, Location: {self.LocationID}".format(self=self)

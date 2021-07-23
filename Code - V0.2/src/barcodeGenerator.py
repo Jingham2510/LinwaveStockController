@@ -44,38 +44,36 @@ def BarcodeGeneration():
     print("Barcodes generated")
 
 
-#Generates the barcode
+# Generates the barcode
 def GUIBarcodeGenerator(barcodeID, barcodeType, barcodeName):
-    
-    
-    
+
     # Checks the ID to make sure its valid
     if (standardCheck(barcodeID) == 0):
         print("DEBUG: ID NOT VALID")
         return -1
-    #Wont generate a barcode if it already exists in the database
+    # Wont generate a barcode if it already exists in the database
     elif (dataHandler.BarcodeCheck(barcodeID) == 1):
         print("DEBUG: BARCODE ALREADY EXISTS")
         return -2
 
-    #Wont generate a barcode if the data fields dont have anything in them
+    # Wont generate a barcode if the data fields dont have anything in them
     elif (barcodeType == "" or barcodeName == ""):
         print("DEBUG: EMPTY FIELDS")
         return -3
-    
 
     else:
-        #print(dataHandler.barcodeCheck(barcodeID))
-         #Creates the barcode SVG and also the barcode object
+        # print(dataHandler.barcodeCheck(barcodeID))
+        # Creates the barcode SVG and also the barcode object
         barcodeSVG = barcode.get('ean13', barcodeID)
 
         barcodeFile = barcodeSVG.save(barcodeID)
-        barcodeFile        
+        barcodeFile
         BarcodeLocationMove(barcodeID)
 
-        #Created here because we know its a valid barcode here
-        generatedBarcode = bc.barcodeObj(barcodeID, barcodeType, barcodeName, None)
-        #print(generatedBarcode.__dict__)
+        # Created here because we know its a valid barcode here
+        generatedBarcode = bc.barcodeObj(
+            barcodeID, barcodeType, barcodeName, None)
+        # print(generatedBarcode.__dict__)
         dataHandler.appendNewBarcode(generatedBarcode)
 
         print("DEBUG: BARCODE GENERATED")
@@ -88,16 +86,12 @@ def BarcodeLocationMove(barcodeID):
     source = r"P:\Joe\MicroController Product Controller\Code - V0.2\\" + barcodeID + ".svg"
     # print(source)
 
-    
-
-
     destination = r"P:\Joe\MicroController Product Controller\barcodes"
 
-    #If the file already exists return 0
-    #A last line of defence, it shouldn't happen
+    # If the file already exists return 0
+    # A last line of defence, it shouldn't happen in normal use
     if (os.path.exists(r"P:\Joe\MicroController Product Controller\barcodes\\" + barcodeID + ".svg")):
         return -1
-
 
     # Moves the barcode to a seperate folder
     shutil.move(source, destination)

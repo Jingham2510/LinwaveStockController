@@ -1,11 +1,9 @@
 -More modern GUI??? - Last resort lol probably PYQT
--Maybe popups to do with generation/scanning of barcodes?? - extra maybe
--Add new barcodes to the database automatically (along with product info)
-- Decide how we are storing the data
--Come up with a standard for the barcodes (i.e. numbers in set places that signify what stuff is)
--Create barcode object - holds all the relevant data
 
--Once a barcode is scanned do something with the data
-	-probably pandaS stuff
+
+
+-Come up with a standard for the barcodes (i.e. numbers in set places that signify what stuff is)
+
+
 
 

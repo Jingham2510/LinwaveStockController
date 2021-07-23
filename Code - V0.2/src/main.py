@@ -7,7 +7,7 @@ import barcode
 from barcodeGenerator import GUIBarcodeGenerator, standardCheck
 from barcodeReader import barcodeReader
 import os
-from dataHandler import getBarcodeInfo, openTabloo, BarcodeCheck
+from dataHandler import editBarcode, getBarcodeInfo, openTabloo, BarcodeCheck
 
 
 global root
@@ -100,38 +100,35 @@ def BarcodeGeneratorFrameSetup(generatorFrame):
         barcodeIDField.register(EntryValidate), '%P', '%d')
     barcodeIDField.grid(column=2, row=2, sticky=(W, E))
 
-    #Generates and places the barcode type instruction label
+    # Generates and places the barcode type instruction label
     typeInstructions = ttk.Label(generatorFrame, text="Type:")
     typeInstructions.grid(column=1, row=3, sticky=E)
 
-    #Generates and places a field to put the type of object the barcode is being placed on (i.e component, kit, shelf etc.)
+    # Generates and places a field to put the type of object the barcode is being placed on (i.e component, kit, shelf etc.)
     barcodeType = StringVar()
-    barcodeTypeField = ttk.Entry(generatorFrame, textvariable = barcodeType)
-    barcodeTypeField.grid(column=2, row=3, sticky=(W,E))
+    barcodeTypeField = ttk.Entry(generatorFrame, textvariable=barcodeType)
+    barcodeTypeField.grid(column=2, row=3, sticky=(W, E))
 
-    #Generates and places the barcode name instruction label
-    nameInstructions = ttk.Label(generatorFrame, text ="Name:")
+    # Generates and places the barcode name instruction label
+    nameInstructions = ttk.Label(generatorFrame, text="Name:")
     nameInstructions.grid(column=1, row=4, sticky=E)
 
-    #Generates and places the field to put the name associated with the barcode
+    # Generates and places the field to put the name associated with the barcode
     barcodeName = StringVar()
-    barcodeNameField = ttk.Entry(generatorFrame, textvariable = barcodeName)
-    barcodeNameField.grid(column=2, row=4, sticky=(W,E))
-
-
+    barcodeNameField = ttk.Entry(generatorFrame, textvariable=barcodeName)
+    barcodeNameField.grid(column=2, row=4, sticky=(W, E))
 
     # Generates the button which runs the code to generate the barcode based on the input in the text field
     generateBarcodeButton = ttk.Button(generatorFrame, text="Generate barcode",
                                        command=lambda: BarcodeGeneratorWrapper(barcodeIDField.get(), barcodeTypeField.get(), barcodeNameField.get(), generatorFrame))
     generateBarcodeButton.grid(column=3, row=2, sticky=(W, E))
 
+    generateClearButton = ttk.Button(generatorFrame, text="Clear", command=lambda: fieldClear(
+        barcodeIDField, barcodeTypeField, barcodeNameField))
+    generateClearButton.grid(column=4, row=2, sticky=(W, E))
 
-    generateClearButton = ttk.Button(generatorFrame, text="Clear", command =lambda: fieldClear(barcodeIDField, barcodeTypeField, barcodeNameField))
-    generateClearButton.grid(column=4, row=2, sticky=(W,E))
 
-
-
-#Clears all fields on the frame
+# Clears all fields on the frame
 def fieldClear(IDField, typeField, nameField):
     IDField.delete(0, END)
     typeField.delete(0, END)
@@ -141,28 +138,30 @@ def fieldClear(IDField, typeField, nameField):
 # Handles the barcode generation
 def BarcodeGeneratorWrapper(barcodeID, barcodeType, barcodeName, generatorFrame):
     genFlag = GUIBarcodeGenerator(barcodeID, barcodeType, barcodeName)
-    
+
     # If an invalid barcode is provided display a message
     if (genFlag == 1):
         # Displays a success message
         successLabel = ttk.Label(generatorFrame, text="Barcode generated!")
         successLabel.grid(column=5, row=2, sticky=(W, E))
     # Displays a failure message based on the failure
-    if (genFlag == -1):        
+    if (genFlag == -1):
         failureLabel = ttk.Label(generatorFrame, text="Invalid Barcode")
         failureLabel.grid(column=5, row=2, sticky=(W, E))
-    
+
     if (genFlag == -2):
-        failureLabel=ttk.Label(generatorFrame, text="Barcode already exists")
-        failureLabel.grid(column=5, row=2, sticky=(W,E))
+        failureLabel = ttk.Label(generatorFrame, text="Barcode already exists")
+        failureLabel.grid(column=5, row=2, sticky=(W, E))
 
     if(genFlag == -3):
-        failureLabel = ttk.Label(generatorFrame, text="Please fill every field")
-        failureLabel.grid(column=5, row=2, sticky=(W,E))
+        failureLabel = ttk.Label(
+            generatorFrame, text="Please fill every field")
+        failureLabel.grid(column=5, row=2, sticky=(W, E))
 
     if(genFlag == -4):
-        failureLabel = ttk.Label(generatorFrame, text="Barcode doesn't end in a 6")
-        failureLabel.grid(column=5, row=2, sticky=(W,E))
+        failureLabel = ttk.Label(
+            generatorFrame, text="Barcode doesn't end in a 6")
+        failureLabel.grid(column=5, row=2, sticky=(W, E))
 
 
 # Validates entries into the barcode text field
@@ -191,30 +190,75 @@ def BarcodeScannerFrameSetup(scannerFrame):
                                command=lambda: BarcodeScannerWrapper(scannerFrame))
     scannerButton.grid(column=2, row=2, sticky=(W, E))
 
+    manualButton = ttk.Button(scannerFrame, text="Enter a Barcode Manually", command= manualBarcodeEntryFrame)
+    manualButton.grid(row=3, column =2, sticky=(W,E))
+
 
 # Handles the barcode scanning - and the processes afterwards
 def BarcodeScannerWrapper(scannerFrame):
 
-
     # Uses the other file to scan the barcode and store the data
     barcodeID = barcodeReader()
 
-    
+    print("DEBUG: BARCODE ID:" + barcodeID)
 
-    #If the scanned barcode is invalid pop up a message box
+    # If the scanned barcode is invalid pop up a message box
     if (standardCheck(barcodeID) == 0):
         print("DEBUG: SCANNED INVALID BARCODE")
-        messagebox.showinfo(title = "Warning", message="Barcode is invalid")
+        messagebox.showinfo(title="Warning", message="Barcode is invalid")
 
-    #Checks to see if the barcode exists
+    # Checks to see if the barcode exists
     elif(BarcodeCheck(barcodeID) == 0):
         print("DEBUG: BARCODE DOESN'T EXIST")
-        messagebox.showinfo(title ="Warning", message="Barcode does not exist in the database")
+        messagebox.showinfo(
+            title="Warning", message="Barcode does not exist in the database")
 
     else:
         changeBarcodeDetailsFrame(barcodeID)
-        scannerPrev = ttk.Label(scannerFrame, text="Previous Barcode: " + barcodeID)
+        scannerPrev = ttk.Label(
+            scannerFrame, text="Previous Barcode: " + barcodeID)
         scannerPrev.grid(column=3, row=2, sticky=(W, E))
+
+
+#Creates the pop up for manual barcode entry
+def manualBarcodeEntryFrame():
+
+    manualWindow = Toplevel(root)
+
+    manualFrame = ttk.Frame(manualWindow, padding = "3 3 12 12")
+    manualFrame.grid(row=0, column=0, stick=(N,W,E,S))
+
+    manualTitle = ttk.Label(manualWindow, text="Enter the barcode")
+    manualTitle.grid(row=1, column=2, sticky=(W,E))
+
+    manualBarcode = StringVar()
+
+    manualField = ttk.Entry(manualWindow, textvariable= manualBarcode)
+    manualField.grid(row =2, column =2, sticky=(W,E))
+
+    #Need to write the function to check the barcode exists - then put it into the editor
+    manualSubmit = ttk.Button(manualWindow, text="Input", command= lambda: manualBarcodeCheck(manualField.get()))
+    manualSubmit.grid(row=3, column=2, sticky=(W,E))
+
+
+
+
+
+
+def manualBarcodeCheck(barcodeID):
+
+    if (standardCheck(barcodeID) == 0):
+        print("DEBUG: INVALID BARCODE")
+        messagebox.showinfo(title="Warning", message="Barcode is invalid")
+
+    # Checks to see if the barcode exists
+    elif(BarcodeCheck(barcodeID) == 0):
+        print("DEBUG: BARCODE DOESN'T EXIST")
+        messagebox.showinfo(
+            title="Warning", message="Barcode does not exist in the database")
+
+    else:
+        changeBarcodeDetailsFrame(barcodeID)
 
 
 # Sets up the config frame
@@ -230,12 +274,11 @@ def ConfigFrameSetup(configFrame):
     openSpreadsheet.grid(column=2, row=2, sticky=(W, E))
 
     openCSV = ttk.Button(configFrame, text="Open csv File", command=OpenCSV)
-    openCSV.grid(column=3, row=2, sticky=(W,E))
+    openCSV.grid(column=3, row=2, sticky=(W, E))
 
-
-    openTablooButton = ttk.Button(configFrame, text="Open Tabloo DONT CLICK LOL", command=openTabloo)
-    openTablooButton.grid(column=4, row=2, sticky=(W,E))
-
+    openTablooButton = ttk.Button(
+        configFrame, text="Open Tabloo DONT CLICK LOL", command=openTabloo)
+    openTablooButton.grid(column=4, row=2, sticky=(W, E))
 
 
 # Opens the spreadsheet - may be remoced at a later date
@@ -259,45 +302,95 @@ def RaiseFrame(frame):
     frame.tkraise()
 
 
+# Produces a new frame which you can use to edit the details of a barcode
+def changeBarcodeDetailsFrame(barcodeID):
 
-
-
-
-#Produces a new frame which you can use to edit the details of a barcode
-def changeBarcodeDetailsFrame(barcodeID):    
-    
-    print("Under construction")
+    print("DEBUG: Under construction")
 
     currBarcode = getBarcodeInfo(barcodeID)
-    
+
     detailsWindow = Toplevel(root)
 
-    windowFrame = ttk.Frame(detailsWindow, padding = "3 3 12 12")
-    windowFrame.grid(row=0, column=0, stick=(N,W,E,S))
+    windowFrame = ttk.Frame(detailsWindow, padding="3 3 12 12")
+    windowFrame.grid(row=0, column=0, stick=(N, W, E, S))
 
     windowLabel = ttk.Label(detailsWindow, text="Barcode Editor")
-    windowLabel.grid(row=1,column=2, sticky=(W,E))
-
-    
+    windowLabel.grid(row=1, column=2, sticky=(W, E))
 
     barcodeData = vars(currBarcode)
 
     colCount = 1
-    #Prints the titles for the data onto the window
+    # Prints the titles for the data onto the window
     for key in barcodeData.keys():
-        dataTitle = ttk.Label(detailsWindow, text=key)
-        dataTitle.grid(row =2, column = colCount , sticky = (W,E))
+        dataTitle = ttk.Label(detailsWindow, text=key + ":")
+        dataTitle.grid(row=2, column=colCount, sticky=(W, E))
+
+        #We dont want to let the user edit the barcodeID
+        if (colCount != 1):
+            #We set the key as a default argument value for the lambda function so that each button is for each different attribute
+            editButton = ttk.Button(detailsWindow, text = "Edit " + key, command = lambda key = key: editAttribute(key, barcodeID, detailsWindow))
+            editButton.grid(row = 4, column = colCount, sticky=(W,E))
+
+
+
         colCount += 1
-   
 
     colCount = 1
-    #Prints all the data for the barcode onto the window
-    for key in barcodeData:       
+    # Prints all the data for the barcode onto the window
+    for key in barcodeData:
 
-        #Prints the actual data
+        # Prints the actual data
         dataLabel = ttk.Label(detailsWindow, text=barcodeData[key])
-        dataLabel.grid(row =3, column = colCount , sticky = (W,E))
+        dataLabel.grid(row=3, column=colCount, sticky=(W, E))
         colCount += 1
 
+    colCount = 1
 
+
+"""
+Now close the windows when thigns are editied
+Update the data on the edit page
+"""
+
+
+
+
+def editAttribute(barcodeKey, barcodeID, detailsWindow):
+    
+
+    #Creates the edit window and then places all the necessary thigns the user needs to edit the attribute
+    editWindow = Toplevel(root)
+
+    editFrame = ttk.Frame(editWindow, padding = "3 3 12 12")
+    editFrame.grid(row = 0, column = 0, stick=(N,W,E,S))
+
+
+    editTitle = ttk.Label(editWindow, text="Edit " + barcodeKey)
+    editTitle.grid(row = 1, column = 2, sticky=(W,E))
+
+    editVar = StringVar()
+
+    editField = ttk.Entry(editWindow, textvariable = editVar)
+    editField.grid(row = 2, column = 2, sticky=(W,E))
+
+
+
+    editButton = ttk.Button(editWindow, text="Commit Edit" , command= lambda: [editBarcode(barcodeID, barcodeKey, editField.get()), resetDetailsWindow(editWindow, barcodeID, detailsWindow)])
+    editButton.grid(row =3, column = 2, sticky=(W,E))
+
+
+
+#Closes the editing window then resets the info window to display the new data
+def resetDetailsWindow(editWindow, barcodeID, detailsWindow):
+    editWindow.destroy()
+
+    detailsWindow.destroy()
+
+    changeBarcodeDetailsFrame(barcodeID)
+
+
+
+
+#Starts the main loop and creates the GUI
+#Essentailly starts the program
 MainFrameSetup()

@@ -3,8 +3,6 @@ from pyzbar.pyzbar import decode
 from barcodeDetector import *
 
 
-
-
 """
 #Opens the test image
 image = cv2.imread('pic test.jpg')

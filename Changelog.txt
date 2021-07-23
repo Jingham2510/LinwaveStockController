@@ -20,5 +20,7 @@ V0.2
 -Implementation of new data handler (done using pandaS)
 -GUI updates, more fields for entry for barcode generation
 -Barcode scanner now checks if barcodes exist/ are valid
-	
+	-When a existing barcode is scanned you can now change its data
+-You can now delete barcodes from the database
+	-Needs to be added to the GUI
 
