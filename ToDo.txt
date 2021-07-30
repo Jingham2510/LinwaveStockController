@@ -1,8 +1,31 @@
--More modern GUI??? - Last resort lol probably PYQT
+-More modern GUI??? - Last resort lol probably PYQT - If your really really really bored 
 
 
 
 -Come up with a standard for the barcodes (i.e. numbers in set places that signify what stuff is)
+
+
+-If a barcode represents a location 
+	-Notice it
+	-Use that to determine another barcodes location
+
+
+
+
+
+
+
+
+-Data consolidation? - Not entierly necessary because once you had done something with the GUI they are then the same again
+	-On bootup make sure that the data in the CSV and excel document are the same
+	-If there not, copy the CSV? Or ask the user which to keep
+
+
+
+-Choose what Pi we are doing it on
+-Choose a camera (or maybe a barcode scanner) 
+-Adapt code for a Pi
+-Get it on the Pi - Figure out how we are going to utilise multiple ones
 
 
 

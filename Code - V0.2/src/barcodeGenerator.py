@@ -53,7 +53,7 @@ def GUIBarcodeGenerator(barcodeID, barcodeType, barcodeName):
         print("DEBUG: ID NOT VALID")
         return -1
     # Wont generate a barcode if it already exists in the database
-    elif (dataHandler.BarcodeCheck(barcodeID) == 1):
+    elif (dataHandler.barcodeCheck(barcodeID) == 1):
         print("DEBUG: BARCODE ALREADY EXISTS")
         return -2
 
@@ -81,12 +81,53 @@ def GUIBarcodeGenerator(barcodeID, barcodeType, barcodeName):
         return 1
 
 
+
+
+#Creates a barcode from a scanned barcode (that doesnt exist)
+def barcodeScanCreation(barcodeID):
+    # Checks the ID to make sure its valid
+    if (standardCheck(barcodeID) == 0):
+        print("DEBUG: ID NOT VALID")
+        return -1
+
+
+    else:
+        # print(dataHandler.barcodeCheck(barcodeID))
+        # Creates the barcode SVG and also the barcode object
+        barcodeSVG = barcode.get('ean13', barcodeID)
+
+        barcodeFile = barcodeSVG.save(barcodeID)
+        barcodeFile
+        BarcodeLocationMove(barcodeID)
+
+        # Created here because we know its a valid barcode here
+        generatedBarcode = bc.barcodeObj(
+            barcodeID, None, None, None)
+        # print(generatedBarcode.__dict__)
+        dataHandler.appendNewBarcode(generatedBarcode)
+
+        print("DEBUG: BARCODE GENERATED")
+        return 1
+
+
+
+
+
+
+
 # Moves the barcode from the DIR where the code is to a seperate one
 # Change DIR path with version updates
 # This can produce a lot of bugs if not checked properly
+#it ?should? be automated now
 def BarcodeLocationMove(barcodeID):
-    source = r"P:\Joe\MicroController Product Controller\Code - V0.2\\" + barcodeID + ".svg"
-    # print(source)
+    
+    #Gets the current directory
+    #Check this when updating!!!!!!!
+    currDir = os.getcwd()
+
+    #Generates the source path
+    source = currDir + r"//" + barcodeID + ".svg"
+    #print(source)
 
     destination = r"P:\Joe\MicroController Product Controller\barcodes"
 
@@ -97,3 +138,6 @@ def BarcodeLocationMove(barcodeID):
 
     # Moves the barcode to a seperate folder
     shutil.move(source, destination)
+
+
+

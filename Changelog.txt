@@ -13,7 +13,7 @@ V0.1 - Joe:
 	-Adds new barcodes to an excel spreadsheet
 
 
-V0.2
+V0.2 - Joe:
 -Deletion of first data handler
 	-There are probably simpler and more suitable options
 	-This can be achieved with OOP 
@@ -22,5 +22,8 @@ V0.2
 -Barcode scanner now checks if barcodes exist/ are valid
 	-When a existing barcode is scanned you can now change its data
 -You can now delete barcodes from the database
-	-Needs to be added to the GUI
+- You can manually enter barcodes rather than scan them as well
+- Automatic filepaths for moving the barcodes
+	-Should reduce the amount of errors due to incorrect filepaths with updates
+-Scanned barcodes that dont exist in the database can be added to the database post scan
 

@@ -3,10 +3,11 @@ from tkinter import ttk
 from tkinter import messagebox
 
 import barcode
-from barcodeGenerator import GUIBarcodeGenerator, standardCheck
+from barcodeGenerator import GUIBarcodeGenerator, standardCheck, barcodeScanCreation
 from barcodeReader import barcodeReader
 import os
-from dataHandler import editBarcode, getBarcodeInfo, openTabloo, BarcodeCheck
+from dataHandler import editBarcode, getBarcodeInfo, openTabloo, barcodeCheck, deleteBarcode
+
 
 # Global variable which will store the root of the GUI
 global root
@@ -212,10 +213,14 @@ def BarcodeScannerWrapper(scannerFrame):
         messagebox.showinfo(title="Warning", message="Barcode is invalid")
 
     # Checks to see if the barcode exists
-    elif(BarcodeCheck(barcodeID) == 0):
+    elif(barcodeCheck(barcodeID) == 0):
         print("DEBUG: BARCODE DOESN'T EXIST")
-        messagebox.showinfo(
-            title="Warning", message="Barcode does not exist in the database")
+        createNew = messagebox.askquestion(
+            title="Warning", message="Barcode does not exist in the database\n Do you want to add it?")
+
+        if createNew == "yes":
+            barcodeScanCreation(barcodeID)
+        
 
     # If the barcode exists open a ne wwindow where the user can change the data
     else:
@@ -264,7 +269,7 @@ def manualBarcodeCheck(barcodeID):
         messagebox.showinfo(title="Warning", message="Barcode is invalid")
 
     # Checks to see if the barcode exists
-    elif(BarcodeCheck(barcodeID) == 0):
+    elif(barcodeCheck(barcodeID) == 0):
         print("DEBUG: BARCODE DOESN'T EXIST")
         messagebox.showinfo(
             title="Warning", message="Barcode does not exist in the database")
@@ -340,6 +345,20 @@ def changeBarcodeDetailsFrame(barcodeID):
     barcodeData = vars(currBarcode)
 
     colCount = 1
+    # Prints all the data for the barcode onto the window
+    for key in barcodeData:
+
+        # Prints the actual data
+        dataLabel = ttk.Label(detailsWindow, text=barcodeData[key])
+        dataLabel.grid(row=3, column=colCount, sticky=(W, E))
+        colCount += 1
+
+    # Adds the delete button
+    deleteButton = ttk.Button(detailsWindow, text="Delete Barcode", command=lambda: [
+                              deleteBarcode(barcodeID), detailsWindow.destroy()])
+    deleteButton.grid(row=3, column=colCount, sticky=(W, E))
+
+    colCount = 1
     # Prints the titles for the data onto the window
     for key in barcodeData.keys():
         dataTitle = ttk.Label(detailsWindow, text=key + ":")
@@ -353,17 +372,6 @@ def changeBarcodeDetailsFrame(barcodeID):
             editButton.grid(row=4, column=colCount, sticky=(W, E))
 
         colCount += 1
-
-    colCount = 1
-    # Prints all the data for the barcode onto the window
-    for key in barcodeData:
-
-        # Prints the actual data
-        dataLabel = ttk.Label(detailsWindow, text=barcodeData[key])
-        dataLabel.grid(row=3, column=colCount, sticky=(W, E))
-        colCount += 1
-
-    colCount = 1
 
 
 # Creates another window where the user can enter the new data for the attribute of the barcode

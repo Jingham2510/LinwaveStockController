@@ -30,7 +30,7 @@ def appendNewBarcode(barcode):
 
 
 # Checks to see if a barcode already exists
-def BarcodeCheck(barcodeID):
+def barcodeCheck(barcodeID):
 
     df = dataframeOpen()
 
@@ -129,14 +129,19 @@ def editBarcode(barcodeID, key, newData):
 # Hasnt been fully implemented yet
 # Needs a button on the GUI
 def deleteBarcode(barcodeID):
+    #Opens the dataframe
     df = dataframeOpen()
-
+    #Finds the specific row of the barcode
     row = findBarcode(barcodeID, df)
 
-    df.drop(row)
+    #Deletes the row inplace (dont need a new declaration)
+    df.drop(row, inplace=True)
+
 
     # Saves the database twice
     dataframeSave(df)
+
+    print("Barcode Deleted")
 
 
 # Opens tabloo - Looks cool, crashes the program
@@ -167,5 +172,5 @@ def dataframeOpen():
         'P:\Joe\MicroController Product Controller\Barcode Database.csv', index_col=0)
 
 
-# print(df)
+
 formatSheet()
