@@ -39,6 +39,7 @@ def barcodeReader():
                     # print(barcode_region[1])
 
                     # Decodes the barcode
+                    # The check is important in making sure that every frame is scanned, because otherwise the program slows quite a bit
                     decodedBarcode = decode(frame)
 
                     if(len(decodedBarcode) != 0):

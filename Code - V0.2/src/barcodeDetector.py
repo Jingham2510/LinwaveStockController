@@ -60,6 +60,7 @@ def barcodeDetector(frame):
     # Puts all the contours in a list
     contours = imutils.grab_contours(contours)
 
+    # If there is a contour somewhere
     if (len(contours) != 0):
 
         # Sorts the list into largest to smallest and takes the first index
@@ -80,7 +81,3 @@ def barcodeDetector(frame):
 
     cv2.imshow('Frame', frame)
     return 0
-
-
-def importCheck():
-    return 1

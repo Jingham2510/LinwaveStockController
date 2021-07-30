@@ -17,9 +17,10 @@ def standardCheck(barcodeID):
 
 # Keep a list of item codes (for different products) then add serialisation?
 
+# OBSOLETE/DEPRECATED - USER CAN DO THIS USING THE MAIN CODE
 def BarcodeGeneration():
 
-    # takes user input
+    # Takes user input
     numOfBarcodes = input("Enter number of barcodes to be generated:\n")
 
     numOfBarcodes = int(numOfBarcodes)
@@ -44,7 +45,7 @@ def BarcodeGeneration():
     print("Barcodes generated")
 
 
-# Generates the barcode
+# Generates the barcode for the GUI
 def GUIBarcodeGenerator(barcodeID, barcodeType, barcodeName):
 
     # Checks the ID to make sure its valid
@@ -81,7 +82,8 @@ def GUIBarcodeGenerator(barcodeID, barcodeType, barcodeName):
 
 
 # Moves the barcode from the DIR where the code is to a seperate one
-# Change DIR path with version updates - CURR V0.1
+# Change DIR path with version updates
+# This can produce a lot of bugs if not checked properly
 def BarcodeLocationMove(barcodeID):
     source = r"P:\Joe\MicroController Product Controller\Code - V0.2\\" + barcodeID + ".svg"
     # print(source)
