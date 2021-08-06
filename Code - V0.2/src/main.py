@@ -159,7 +159,8 @@ def BarcodeGeneratorWrapper(barcodeID, barcodeType, barcodeName, generatorFrame)
         failureLabel = ttk.Label(
             generatorFrame, text="Please fill every field")
         failureLabel.grid(column=5, row=2, sticky=(W, E))
-    # Deprecated - We dont need validitity checks (yet)
+
+    # Deprecated - We dont need validitity checks (yet) - You should not be getting this label!
     if(genFlag == -4):
         failureLabel = ttk.Label(
             generatorFrame, text="Barcode doesn't end in a ??")
@@ -169,7 +170,7 @@ def BarcodeGeneratorWrapper(barcodeID, barcodeType, barcodeName, generatorFrame)
 # Validates entries into the barcode text field
 def EntryValidate(inStr, acttyp):
     # Checks the action type
-    if acttyp == '1':  # insert
+    if acttyp == '1':  # 1 signifies its an insertion into the field
         # If the character isnt a digit or is too long don't insert it
         if not inStr.isdigit() or len(inStr) > 13:
             return False
@@ -220,7 +221,7 @@ def BarcodeScannerWrapper(scannerFrame):
 
         if createNew == "yes":
             barcodeScanCreation(barcodeID)
-        
+            changeBarcodeDetailsFrame(barcodeID)
 
     # If the barcode exists open a ne wwindow where the user can change the data
     else:
@@ -271,8 +272,12 @@ def manualBarcodeCheck(barcodeID):
     # Checks to see if the barcode exists
     elif(barcodeCheck(barcodeID) == 0):
         print("DEBUG: BARCODE DOESN'T EXIST")
-        messagebox.showinfo(
-            title="Warning", message="Barcode does not exist in the database")
+        createNew = messagebox.askquestion(
+            title="Warning", message="Barcode does not exist in the database\n Do you want to add it?")
+
+        if createNew == "yes":
+            barcodeScanCreation(barcodeID)
+            changeBarcodeDetailsFrame(barcodeID)
 
     # If the barcode causes no problems open its related data
     else:

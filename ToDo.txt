@@ -1,6 +1,10 @@
 -More modern GUI??? - Last resort lol probably PYQT - If your really really really bored 
 
 
+-Barcode package has functionality for generating the barcodes as images instead
+	-Possible update? although the current generation seems to be fine, might make it easier to print them in the long run
+
+
 
 -Come up with a standard for the barcodes (i.e. numbers in set places that signify what stuff is)
 

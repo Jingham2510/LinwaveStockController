@@ -14,3 +14,4 @@ Any bugs either speak to/email me, or just put them in the text file yourself
 	-Try and do all editing with the application
 	-It is possible now!!!
 3) If the prgoram isnt working, first check to make sure all the path directories are correct, they will change when data is moved or the program is updated
+4) Dont use the Tabloo button in the config menu - It opens a funky web browser table - Very cool, but it does crash the program (because it keeps the program busy indefinitely)

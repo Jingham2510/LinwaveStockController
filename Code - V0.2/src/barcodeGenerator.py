@@ -15,8 +15,6 @@ def standardCheck(barcodeID):
         return 1
 
 
-# Keep a list of item codes (for different products) then add serialisation?
-
 # OBSOLETE/DEPRECATED - USER CAN DO THIS USING THE MAIN CODE
 def BarcodeGeneration():
 
@@ -63,7 +61,7 @@ def GUIBarcodeGenerator(barcodeID, barcodeType, barcodeName):
         return -3
 
     else:
-        # print(dataHandler.barcodeCheck(barcodeID))
+
         # Creates the barcode SVG and also the barcode object
         barcodeSVG = barcode.get('ean13', barcodeID)
 
@@ -74,25 +72,22 @@ def GUIBarcodeGenerator(barcodeID, barcodeType, barcodeName):
         # Created here because we know its a valid barcode here
         generatedBarcode = bc.barcodeObj(
             barcodeID, barcodeType, barcodeName, None)
-        # print(generatedBarcode.__dict__)
+
         dataHandler.appendNewBarcode(generatedBarcode)
 
         print("DEBUG: BARCODE GENERATED")
         return 1
 
 
-
-
-#Creates a barcode from a scanned barcode (that doesnt exist)
+# Creates a barcode from a scanned barcode (that doesnt exist)
 def barcodeScanCreation(barcodeID):
     # Checks the ID to make sure its valid
     if (standardCheck(barcodeID) == 0):
         print("DEBUG: ID NOT VALID")
         return -1
 
-
     else:
-        # print(dataHandler.barcodeCheck(barcodeID))
+
         # Creates the barcode SVG and also the barcode object
         barcodeSVG = barcode.get('ean13', barcodeID)
 
@@ -103,31 +98,26 @@ def barcodeScanCreation(barcodeID):
         # Created here because we know its a valid barcode here
         generatedBarcode = bc.barcodeObj(
             barcodeID, None, None, None)
-        # print(generatedBarcode.__dict__)
+
         dataHandler.appendNewBarcode(generatedBarcode)
 
         print("DEBUG: BARCODE GENERATED")
         return 1
 
 
-
-
-
-
-
 # Moves the barcode from the DIR where the code is to a seperate one
 # Change DIR path with version updates
 # This can produce a lot of bugs if not checked properly
-#it ?should? be automated now
+# it ?should? be automated now
 def BarcodeLocationMove(barcodeID):
-    
-    #Gets the current directory
-    #Check this when updating!!!!!!!
+
+    # Gets the current directory
+    # Check this when updating!!!!!!!
     currDir = os.getcwd()
 
-    #Generates the source path
+    # Generates the source path
     source = currDir + r"//" + barcodeID + ".svg"
-    #print(source)
+    # print(source)
 
     destination = r"P:\Joe\MicroController Product Controller\barcodes"
 
@@ -138,6 +128,3 @@ def BarcodeLocationMove(barcodeID):
 
     # Moves the barcode to a seperate folder
     shutil.move(source, destination)
-
-
-

@@ -26,4 +26,5 @@ V0.2 - Joe:
 - Automatic filepaths for moving the barcodes
 	-Should reduce the amount of errors due to incorrect filepaths with updates
 -Scanned barcodes that dont exist in the database can be added to the database post scan
+	-Including manual entry
 

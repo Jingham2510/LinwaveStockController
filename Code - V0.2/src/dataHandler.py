@@ -23,7 +23,7 @@ def appendNewBarcode(barcode):
                         barcode.Name, dateFormatted, None], index=df.columns)
     # Append the barcode data to the dataFrame
     df = df.append(barcode, ignore_index=True)
-    # print(df)
+
     # Saves the data frame in the CSV file and the Excel File
     dataframeSave(df)
     print("DEBUG - APPENDED TO DATABASE")
@@ -129,14 +129,13 @@ def editBarcode(barcodeID, key, newData):
 # Hasnt been fully implemented yet
 # Needs a button on the GUI
 def deleteBarcode(barcodeID):
-    #Opens the dataframe
+    # Opens the dataframe
     df = dataframeOpen()
-    #Finds the specific row of the barcode
+    # Finds the specific row of the barcode
     row = findBarcode(barcodeID, df)
 
-    #Deletes the row inplace (dont need a new declaration)
+    # Deletes the row inplace (dont need a new declaration)
     df.drop(row, inplace=True)
-
 
     # Saves the database twice
     dataframeSave(df)
@@ -148,10 +147,6 @@ def deleteBarcode(barcodeID):
 def openTabloo():
     df = dataframeOpen()
     tabloo.show(df)
-
-
-# This is the excel sheet with all of the barcodes stored in it - I use a pandas dataframe to open and manipulate/edit the data
-#df = pd.read_csv('P:\Joe\MicroController Product Controller\Barcode Database.csv', index_col=0)
 
 
 # Saves the dataframe - Saves us from writing it loads
@@ -170,7 +165,6 @@ def dataframeOpen():
     # This is the csv with all of the barcodes stored in it - I use a pandas dataframe to open and manipulate/edit the data
     return pd.read_csv(
         'P:\Joe\MicroController Product Controller\Barcode Database.csv', index_col=0)
-
 
 
 formatSheet()

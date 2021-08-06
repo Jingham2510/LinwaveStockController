@@ -12,7 +12,7 @@ class barcodeObj:
 
     # Sets the new location for the barcode
     # Possible use with barcode scanning?
-    # Not really used!
+    # Not really used! - Could be used of course
     def setLocation(self, LocationID):
         self.LocationID = LocationID
 

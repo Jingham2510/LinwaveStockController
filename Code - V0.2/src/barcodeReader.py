@@ -3,14 +3,6 @@ from pyzbar.pyzbar import decode
 from barcodeDetector import *
 
 
-"""
-#Opens the test image
-image = cv2.imread('pic test.jpg')
-#displays the test image
-cv2.imshow('test', image)
-"""
-
-
 def barcodeReader():
     # Starts to collect data from the camera
     camCapture = cv2.VideoCapture(0)
@@ -36,16 +28,11 @@ def barcodeReader():
                 # The first value returned from barcode Detector is a flag to determine whether one has been detected or not
                 if (barcodeRegion[0] == 1):
 
-                    # print(barcode_region[1])
-
                     # Decodes the barcode
                     # The check is important in making sure that every frame is scanned, because otherwise the program slows quite a bit
                     decodedBarcode = decode(frame)
 
                     if(len(decodedBarcode) != 0):
-
-                        # prints all the data of the barcode
-                        # print(decodedBarcode)
 
                         # Turns the data from bytes to a utf-8 string
                         data = decodedBarcode[0].data.decode("utf-8")
