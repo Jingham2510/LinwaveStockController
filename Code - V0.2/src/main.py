@@ -301,7 +301,7 @@ def ConfigFrameSetup(configFrame):
     openCSV.grid(column=3, row=2, sticky=(W, E))
 
     openTablooButton = ttk.Button(
-        configFrame, text="Open Tabloo DONT CLICK LOL", command=openTabloo)
+        configFrame, text="Open Tabloo DONT CLICK", command=openTabloo)
     openTablooButton.grid(column=4, row=2, sticky=(W, E))
 
 

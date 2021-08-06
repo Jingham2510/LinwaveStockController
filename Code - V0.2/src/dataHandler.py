@@ -144,6 +144,8 @@ def deleteBarcode(barcodeID):
 
 
 # Opens tabloo - Looks cool, crashes the program
+#Tabloo is a web based database viewer - does cool things, can display data for us
+#Just an option I put incase we wanted something flashy 
 def openTabloo():
     df = dataframeOpen()
     tabloo.show(df)
